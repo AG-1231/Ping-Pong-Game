@@ -1,1 +1,2 @@
 # Ping-Pong-Game
+This is a simple two-player Pong game made with Python using the Pygame library. Player 1 uses the W and S keys, while Player 2 uses the Up and Down arrow keys to control their paddles. The ball bounces off the paddles and walls, and players score when the ball passes the opponent’s side. The first player to reach 7 points wins, and the game can restart after a win. This project helps practice Python concepts such as classes, loops, conditionals, collision detection, game logic, and graphics with Pygame.
