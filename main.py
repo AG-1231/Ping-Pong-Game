@@ -2,43 +2,31 @@ import pygame
 import random
 import sys
  
-# -----------------------------------------------
-# simple pong game
-# player 1: W / S keys
-# player 2: UP / DOWN arrow keys
-# first to 7 wins
-# -----------------------------------------------
+
  
 pygame.init()
  
-# window
 WIDTH, HEIGHT = 800, 600
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("pong")
  
-# colors
 BLACK  = (0, 0, 0)
 WHITE  = (255, 255, 255)
 GRAY   = (50, 50, 50)
  
-# clock
 clock = pygame.time.Clock()
 FPS = 60
  
-# fonts
 font_big   = pygame.font.SysFont("monospace", 64, bold=True)
 font_small = pygame.font.SysFont("monospace", 22)
  
-# paddle settings
 PADDLE_W = 12
 PADDLE_H = 80
 PADDLE_SPEED = 6
  
-# ball settings
 BALL_SIZE = 12
 BALL_START_SPEED = 5
  
-# winning score
 WIN_SCORE = 7
  
  
@@ -67,7 +55,6 @@ class Ball:
         self.rect = pygame.Rect(WIDTH // 2 - BALL_SIZE // 2,
                                 HEIGHT // 2 - BALL_SIZE // 2,
                                 BALL_SIZE, BALL_SIZE)
-        # random direction to start
         self.dx = BALL_START_SPEED * random.choice([-1, 1])
         self.dy = BALL_START_SPEED * random.choice([-1, 1])
  
@@ -75,11 +62,9 @@ class Ball:
         self.rect.x += self.dx
         self.rect.y += self.dy
  
-        # bounce off top and bottom
         if self.rect.top <= 0 or self.rect.bottom >= HEIGHT:
             self.dy *= -1
  
-        # bounce off paddles
         if self.rect.colliderect(p1.rect) and self.dx < 0:
             self.dx *= -1
             self.dy += random.uniform(-1, 1)   # tiny angle variation each hit
@@ -87,14 +72,12 @@ class Ball:
             self.dx *= -1
             self.dy += random.uniform(-1, 1)
  
-        # cap vertical speed so it doesn't go crazy
         self.dy = max(-10, min(10, self.dy))
  
-        # check if someone scored
         if self.rect.left <= 0:
-            return "p2"   # player 2 scores
+            return "p2"   
         if self.rect.right >= WIDTH:
-            return "p1"   # player 1 scores
+            return "p1"   
  
         return None
  
@@ -103,7 +86,7 @@ class Ball:
  
  
 def draw_divider():
-    # dashed center line
+    
     dash_height = 15
     gap = 10
     x = WIDTH // 2 - 1
@@ -148,14 +131,14 @@ def main():
     score1 = 0
     score2 = 0
  
-    # start screen
+    
     show_message("PONG", "press any key to start")
     wait_for_keypress()
  
     while True:
         clock.tick(FPS)
  
-        # events
+        
         for e in pygame.event.get():
             if e.type == pygame.QUIT:
                 pygame.quit()
@@ -164,7 +147,7 @@ def main():
                 pygame.quit()
                 sys.exit()
  
-        # controls
+        
         keys = pygame.key.get_pressed()
         if keys[pygame.K_w]:
             p1.move_up()
@@ -185,7 +168,7 @@ def main():
             score2 += 1
             ball.reset()
  
-        # check win
+        
         if score1 >= WIN_SCORE:
             show_message("player 1 wins!", "press any key to play again")
             wait_for_keypress()
@@ -197,7 +180,7 @@ def main():
             score1, score2 = 0, 0
             ball.reset()
  
-        # draw everything
+        
         screen.fill(BLACK)
         draw_divider()
         draw_scores(score1, score2)
@@ -205,7 +188,6 @@ def main():
         p2.draw()
         ball.draw()
  
-        # controls reminder at the bottom
         hint = font_small.render("p1: W/S     p2: UP/DOWN     ESC: quit", True, GRAY)
         screen.blit(hint, (WIDTH // 2 - hint.get_width() // 2, HEIGHT - 30))
  
